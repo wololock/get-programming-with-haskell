@@ -1,8 +1,10 @@
 import Data.Semigroup
 
-data Color = Red | Yellow | Blue | Green | Purple | Orange | Brown deriving (Show,Eq)
+data Color = Transparent | Red | Yellow | Blue | Green | Purple | Orange | Brown deriving (Show,Eq)
 
 instance Semigroup Color where
+  (<>) a Transparent = a
+  (<>) Transparent b = b
   (<>) Red Blue = Purple
   (<>) Blue Red = Purple
   (<>) Yellow Blue = Green
@@ -14,6 +16,10 @@ instance Semigroup Color where
            | all (`elem` [Blue,Yellow,Green]) [a,b] = Green
            | all (`elem` [Red,Yellow,Orange]) [a,b] = Orange
            | otherwise = Brown
+
+instance Monoid Color where
+  mempty = Transparent
+  mappend = (<>)
 
 instance Semigroup Integer where
   (<>) a b = a + b
