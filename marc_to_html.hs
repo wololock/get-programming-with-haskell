@@ -42,3 +42,6 @@ booksToHtml books = mconcat ["<html>\n", "<head><title>Books</title>", "<meta ch
 
 myBooks :: [Book]
 myBooks = [book1,book2,book3]
+
+main :: IO ()
+main = TIO.writeFile "books.html" (booksToHtml myBooks)
