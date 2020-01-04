@@ -36,3 +36,18 @@ haversineMaybe :: Maybe LatLong -> Maybe LatLong -> Maybe Double
 haversineMaybe Nothing _ = Nothing
 haversineMaybe _ Nothing = Nothing
 haversineMaybe (Just x) (Just y) = Just (haversine x y)
+
+maybeInc :: Maybe (Integer -> Integer)
+maybeInc = (+) <$> Just 1
+
+main :: IO ()
+main = do
+  putStr "Enter the starting city name: "
+  startingInput <- getLine
+  let startingCity = Map.lookup startingInput locationDB
+  putStr "Enter the destination city name: "
+  destInput <- getLine
+  let destCity = Map.lookup destInput locationDB
+  let distance = haversine <$> startingCity <*> destCity
+  printDistance distance
+  
