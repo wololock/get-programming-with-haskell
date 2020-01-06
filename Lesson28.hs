@@ -69,3 +69,28 @@ min3 = do
   minInt <- minOfInts
   putStrLn (show minInt ++ " is the smallest.")
 
+-- 28.3
+
+data User = User {
+  name :: String,
+  gamerId :: Int,
+  score :: Int
+} deriving Show
+
+serverUsername :: Maybe String
+serverUsername = Just "Sue"
+
+serverGamerId :: Maybe Int
+serverGamerId = Just 1337
+
+serverScore :: Maybe Int
+serverScore = Just 9001
+
+maybeUser :: Maybe User
+maybeUser = User <$> serverUsername <*> serverGamerId <*> serverScore
+
+ioUser :: IO ()
+ioUser = do
+  putStrLn "Enter a username, gamerId and score"
+  user <- User <$> getLine <*> readInt <*> readInt
+  print user
