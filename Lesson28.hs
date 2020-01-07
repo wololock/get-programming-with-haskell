@@ -94,3 +94,19 @@ ioUser = do
   putStrLn "Enter a username, gamerId and score"
   user <- User <$> getLine <*> readInt <*> readInt
   print user
+
+-- Q28.1
+haversineIO :: IO LatLong -> IO LatLong -> IO Double
+haversineIO x y = do
+  x' <- x
+  y' <- y
+  return (haversine x' y')
+
+readLatLong :: IO LatLong
+readLatLong = do
+  lat <- read <$> getLine
+  lng <- read <$> getLine
+  return (lat,lng)
+
+haversineIO' :: IO LatLong -> IO LatLong -> IO Double
+haversineIO' x y = haversine <$> x <*> y
