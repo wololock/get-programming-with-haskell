@@ -70,3 +70,15 @@ ex2 = _join teachers courses teacherId teacher
 joinData = (_join teachers courses teacherId teacher)
 whereResult = _where ((=="English") . courseTitle . snd) joinData
 selectResult = _select (teacherName . fst) whereResult
+
+_hinq selectQuery joinQuery whereQuery = (\joinData ->
+  (\whereResult ->
+    selectQuery whereResult)
+  (whereQuery joinData)
+  ) joinQuery
+
+ex3 = _hinq 
+  (_select (teacherName . fst)) 
+  (_join teachers courses teacherId teacher) 
+  (_where ((=="English") . courseTitle . snd))
+
