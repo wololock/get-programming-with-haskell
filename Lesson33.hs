@@ -1,4 +1,5 @@
 import Control.Monad
+import Control.Applicative
 
 data Name = Name
   { firstName :: String
@@ -26,12 +27,12 @@ students = [(Student 1 Senior (Name "Audre" "Lorde"))
            , (Student 6 Junior (Name "Julia" "Kristeva"))]
 
 
-_select :: (a -> b) -> [a] -> [b]
+_select :: Monad m => (a -> b) -> m a -> m b
 _select prop vals = do
   val <- vals
   return (prop val)
 
-_where :: (a -> Bool) -> [a] -> [a]
+_where :: (Monad m, Alternative m) => (a -> Bool) -> m a -> m a
 _where test vals = do
   val <- vals
   guard (test val)
@@ -57,7 +58,7 @@ data Course = Course
 courses :: [Course]
 courses = [Course 101 "French" 100, Course 201 "English" 200]
 
-_join :: Eq c => [a] -> [b] -> (a -> c) -> (b -> c) -> [(a,b)]
+_join :: (Monad m, Alternative m, Eq c) => m a -> m b -> (a -> c) -> (b -> c) -> m (a,b)
 _join data1 data2 prop1 prop2 = do
   d1 <- data1
   d2 <- data2
@@ -81,4 +82,5 @@ ex3 = _hinq
   (_select (teacherName . fst)) 
   (_join teachers courses teacherId teacher) 
   (_where ((=="English") . courseTitle . snd))
+
 
